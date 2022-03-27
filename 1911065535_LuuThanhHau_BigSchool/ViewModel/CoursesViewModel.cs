@@ -10,6 +10,11 @@ namespace _1911065535_LuuThanhHau_BigSchool.ViewModel
     {
         public IEnumerable<Course> UpcommingCourses { get; set; }
         public bool ShowAction { get; set; }
+
+        public IEnumerable<Attendance> IsFollowCourses { get; set; }
+        public IEnumerable<Following> IsFollowLecturers { get; set; }
     }
+
+
 
 }

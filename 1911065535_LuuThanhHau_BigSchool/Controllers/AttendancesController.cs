@@ -7,10 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Helpers;
 
 namespace _1911065535_LuuThanhHau_BigSchool.Controllers
 {
-    [Authorize]
+    [Authorize] 
     public class AttendancesController : ApiController
     {
         private ApplicationDbContext _dbContext;
@@ -22,16 +23,25 @@ namespace _1911065535_LuuThanhHau_BigSchool.Controllers
         public IHttpActionResult Attend(AttendanceDto attendanceDto)
         {
             var userId = User.Identity.GetUserId();
-            if (_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.CourseId == attendanceDto.CourseId))
-                return BadRequest("The Attendance already exists!");
             var attendance = new Attendance
             {
                 CourseId = attendanceDto.CourseId,
                 AttendeeId = userId
             };
+
+            if (_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.CourseId == attendanceDto.CourseId))
+            {
+
+                //_dbContext.Attendances.Remove(attendance);
+                _dbContext.Entry(attendance).State = System.Data.Entity.EntityState.Deleted;
+                _dbContext.SaveChanges();
+                return Json(new { isFollow = false });
+            }
             _dbContext.Attendances.Add(attendance);
             _dbContext.SaveChanges();
-            return Ok();
+            return Json(new { isFollow = true });
         }
+
     }
 }
+
