@@ -28,7 +28,7 @@ namespace _1911065535_LuuThanhHau_BigSchool.Controllers
                 CourseId = attendanceDto.CourseId,
                 AttendeeId = userId
             };
-
+             
             if (_dbContext.Attendances.Any(a => a.AttendeeId == userId && a.CourseId == attendanceDto.CourseId))
             {
 
